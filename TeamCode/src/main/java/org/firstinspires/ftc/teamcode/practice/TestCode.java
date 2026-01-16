@@ -4,21 +4,25 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 
 @TeleOp(name = "Getting Velocity", group = "TeleOp")
 public class TestCode extends OpMode {
     private DcMotorEx shooter;
 
+    private double RADIUS_M = 0.0762;
+
     @Override
     public void init() {
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
 
-        shooter.setDirection(DcMotorEx.Direction.FORWARD);
+        shooter.setDirection(DcMotorEx.Direction.REVERSE);
         shooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -31,9 +35,11 @@ public class TestCode extends OpMode {
 
         double rpm = (omega * 60) / (2 * Math.PI);
 
-        telemetry.addData("Velocity (ticks/sec)", velocityTicksPerSec);
-        telemetry.addData("Omega (rad/sec)", omega);
-        telemetry.addData("RPM (rev/min)", rpm);
+        double frequencyInSec = velocityTicksPerSec / 28;
+
+        telemetry.addData("Velocity (m/s)", 2 * Math.PI * RADIUS_M * frequencyInSec);
+        telemetry.addData("Angular Velocity ", 2 * Math.PI * frequencyInSec);
+        telemetry.addData("rpm", frequencyInSec * 60);
     }
 }
 
