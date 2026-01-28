@@ -18,7 +18,7 @@ public class spindexerBeta extends OpMode {
 
     @Override
     public void loop() {
-        spindexer.setPower(0.5);
+        spindexer.setPower(0.3);
 
     }
 }

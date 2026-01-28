@@ -74,6 +74,7 @@ public class MoreValueShooter_FF_P_VoltOmega extends OpMode {
 
         // === Battery Voltage ===
         double batteryVoltage = batteryVoltageSensor.getVoltage();
+        batteryVoltage = Math.max(11.0, batteryVoltage);
 
         // === Encoder → angular velocity ===
         double ticksPerSec = shooter.getVelocity();
@@ -81,6 +82,7 @@ public class MoreValueShooter_FF_P_VoltOmega extends OpMode {
 
         // === Voltage-aware Feedforward ===
         double ffPower = (omegaTarget - c) / (a * batteryVoltage);
+        ffPower = Math.max(0.0, Math.min(ffPower, 1.0));
 
         // === Proportional correction ===
         double error = omegaTarget - omegaActual;
